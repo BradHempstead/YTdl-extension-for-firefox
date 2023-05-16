@@ -25,16 +25,26 @@ def sendMessage(encodedMessage):
     sys.stdout.buffer.write(encodedMessage['content'])
     sys.stdout.buffer.flush()
 
+def downloadMP4(url, loc):
+    ytdl = yt.streams.get_highest_resolution()
+    ytdl.download(loc)
+
+def downloadMP3(url, loc):
+    ytdl = yt.streams.filter(only_audio=True).first()
+    ytdl.download((loc + "/audio"))
+
 while True:
     receivedMessage = getMessage()
     if receivedMessage == "ping":
         sendMessage(encodeMessage("pong"))
     else:
         try:
-            link = receivedMessage
-            yt = YouTube(link, use_oauth=True, allow_oauth_cache=True)
-            ytdl = yt.streams.get_highest_resolution()
-            ytdl.download(download_location)
+            data = receivedMessage.split(" ")
+            yt = YouTube(data[1], use_oauth=True, allow_oauth_cache=True)
+            if data[0] == "mp4":
+                downloadMP4(data[1], download_location)
+            elif data[0] == "mp3":
+                downloadMP3(data[1], download_location)
             sendMessage(encodeMessage("downloaded: " + receivedMessage))
         except:
-            sendMessage(encodeMessage("unable to download"))
+            sendMessage(encodeMessage("unable to download"+ receivedMessage))

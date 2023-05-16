@@ -15,18 +15,24 @@ function getCurrentTab() {
   return tabs;
 }
 
-function sendMsg(tab){
-  curTab = tab[0].url;
+function sendMsg(msg){
   let sending = browser.runtime.sendNativeMessage(
     "ytdlfirefox",
-     curTab
+     msg
   );
   sending.then(onResponse, onError);
 }
 
-function getPage(){
+function createMsg(select, tab){
+  msg = select;
+  curTab = tab[0].url;
+  msg = msg + curTab;
+  sendMsg(msg);
+}
+
+function getPage(select){
   browser.tabs.query({currentWindow: true, active: true})
-    .then(sendMsg, onError)
+    .then(createMsg.bind(null, select), onError)
 }
 
 /*
@@ -34,6 +40,6 @@ On a click on the browser action, send the app a message.
 */
 browser.browserAction.onClicked.addListener(() => {
   console.log("Sending:  ping");
-  getPage();
+  getPage("mp3 ");
 
 });
