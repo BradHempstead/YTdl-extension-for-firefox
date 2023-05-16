@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Mozilla\NativeMessagingHosts\ytdlfirefox]
+@="C:\\Users\\Bradl\\coding_projects\\ytdl_extension\\python_downloader_side\\ytdlfirefox.json"
+
+[HKEY_LOCAL_MACHINE\Software\Mozilla\NativeMessagingHosts\ytdlfirefox]
+@="C:\\Users\\Bradl\\coding_projects\\ytdl_extension\\python_downloader_side\\ytdlfirefox.json"

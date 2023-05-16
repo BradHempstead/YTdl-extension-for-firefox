@@ -1,0 +1,7 @@
+{
+    "name": "ytdlfirefox",
+    "description": "Example host for native messaging",
+    "path": "C:\\Users\\Bradl\\coding_projects\\ytdl_extension\\python_downloader_side\\ytdlfirefox.bat",
+    "type": "stdio",
+    "allowed_extensions": [ "ping_pong@example.org" ]
+  }
