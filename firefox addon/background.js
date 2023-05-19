@@ -1,13 +1,15 @@
+/*print response from native messaging to console*/
 function onResponse(response) {
   console.log(`Received ${response}`);
 }
 
+/*print errors to console */
 function onError(error) {
   console.log(`Error: ${error}`);
 }
 
 
-
+/*Create promise for collecting current tabs url (cheeck if used) */
 function getCurrentTab() {
   let queryOptions = { active: true, lastFocusedWindow: true };
   var tabs = browser.tabs.query(queryOptions);
@@ -15,6 +17,8 @@ function getCurrentTab() {
   return tabs;
 }
 
+/*send the download type and url over native message to an instanced version of the python code
+then print the response or error to console */
 function sendMsg(msg){
   let sending = browser.runtime.sendNativeMessage(
     "ytdlfirefox",
@@ -23,6 +27,7 @@ function sendMsg(msg){
   sending.then(onResponse, onError);
 }
 
+/*format the data string for sending to python instance and call the sendMsg function once done */
 function createMsg(select, tab){
   msg = select;
   curTab = tab[0].url;
@@ -30,6 +35,8 @@ function createMsg(select, tab){
   sendMsg(msg);
 }
 
+/*Get the current tab (creates promise) and then call createMsg passing it the download selection
+and tab data */
 function getPage(select, wack){
   browser.tabs.query({currentWindow: true, active: true})
     .then(createMsg.bind(null, select), onError)
@@ -45,6 +52,8 @@ browser.browserAction.onClicked.addListener(() => {
 
 });
 */
+
+/*Add the download video context menu item */
 browser.contextMenus.create({
     id: "download-from-video-youtube",
     title: "Download video from YouTube",
@@ -52,6 +61,7 @@ browser.contextMenus.create({
     onclick: getPage.bind(null,"mp4")
 });
 
+/*Add the download audio context menu item */
 browser.contextMenus.create({
     id: "download-audio-from-youtube",
     title: "Download audio from YouTube",
