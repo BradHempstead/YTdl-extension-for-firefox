@@ -23,6 +23,6 @@
       "default_icon": "icons/message.svg"
     },
     
-    "permissions": ["nativeMessaging", "<all_urls>", "tabs"]
+    "permissions": ["nativeMessaging", "<all_urls>", "tabs", "contextMenus"]
   
   }
