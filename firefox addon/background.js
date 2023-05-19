@@ -26,11 +26,11 @@ function sendMsg(msg){
 function createMsg(select, tab){
   msg = select;
   curTab = tab[0].url;
-  msg = msg + curTab;
+  msg = msg + " " + curTab;
   sendMsg(msg);
 }
 
-function getPage(select){
+function getPage(select, wack){
   browser.tabs.query({currentWindow: true, active: true})
     .then(createMsg.bind(null, select), onError)
 }
@@ -38,8 +38,23 @@ function getPage(select){
 /*
 On a click on the browser action, send the app a message.
 */
+/*
 browser.browserAction.onClicked.addListener(() => {
   console.log("Sending:  ping");
   getPage("mp3 ");
 
+});
+*/
+browser.contextMenus.create({
+    id: "download-from-video-youtube",
+    title: "Download video from YouTube",
+    contexts: ["all"],
+    onclick: getPage.bind(null,"mp4")
+});
+
+browser.contextMenus.create({
+    id: "download-audio-from-youtube",
+    title: "Download audio from YouTube",
+    contexts: ["all"],
+    onclick: getPage.bind(null, "mp3")
 });
