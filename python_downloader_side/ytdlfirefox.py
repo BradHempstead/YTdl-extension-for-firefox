@@ -2,8 +2,11 @@ from pytube import YouTube
 import sys
 import json
 import struct
+import subprocess
 
-download_location = '/Users/Bradl/Downloads/ytdl'
+download_location = 'C:/Users/Bradl/Downloads/ytdl'
+#Specify whether to download mp3 or not (0 = no, 1 = just mp3, 2 = mp3 and mp4 audio)
+mp3download=2
 
 #Read a message from stdin and decode
 def getMessage():
@@ -27,14 +30,18 @@ def sendMessage(encodedMessage):
     sys.stdout.buffer.flush()
 
 #download the highest available video resolution and save to the defined location (default /Downloads)
-def downloadMP4(url, loc):
+def downloadVideo(url, loc):
     ytdl = yt.streams.get_highest_resolution()
     ytdl.download(loc)
 
 #Download audio files and save to Downloads/audio folder
-def downloadMP3(url, loc):
+def downloadAudio(url, loc):
     ytdl = yt.streams.filter(only_audio=True).first()
     ytdl.download((loc + "/audio"))
+    if mp3download == 2:
+        file_in = str(loc + "/audio/" + yt.title + ".mp4")
+        file_out = str(loc + "/audio/" + yt.title + ".mp3")
+        subprocess.run('ffmpeg -i "'+ file_in + '" "' + file_out + '"', shell=False)
 
 #mainloop
 while True:
@@ -51,13 +58,13 @@ while True:
             #create the youtube data variable and use oauth for permissions
             yt = YouTube(data[1], use_oauth=True, allow_oauth_cache=True)
             #parse selection and download as appropriate
-            if data[0] == "mp4":
-                downloadMP4(data[1], download_location)
-            elif data[0] == "mp3":
-                downloadMP3(data[1], download_location)
+            if data[0] == "video":
+                downloadVideo(data[1], download_location)
+            elif data[0] == "audio":
+                downloadAudio(data[1], download_location)
             #send success message
-            sendMessage(encodeMessage("downloaded: " + receivedMessage))
+            sendMessage(encodeMessage("downloaded: " + yt.title))
         except:
             #send failure message as well as data string for fixing
-            sendMessage(encodeMessage("unable to download"+ receivedMessage))
+            sendMessage(encodeMessage("unable to download: "+ receivedMessage))
             

@@ -58,7 +58,7 @@ browser.contextMenus.create({
     id: "download-from-video-youtube",
     title: "Download video from YouTube",
     contexts: ["all"],
-    onclick: getPage.bind(null,"mp4")
+    onclick: getPage.bind(null,"video")
 });
 
 /*Add the download audio context menu item */
@@ -66,5 +66,5 @@ browser.contextMenus.create({
     id: "download-audio-from-youtube",
     title: "Download audio from YouTube",
     contexts: ["all"],
-    onclick: getPage.bind(null, "mp3")
+    onclick: getPage.bind(null, "audio")
 });
